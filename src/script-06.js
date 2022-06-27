@@ -1,17 +1,6 @@
 import "./style.css";
 import * as THREE from "three";
 import gsap from "gsap";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-
-// Cursor
-const cursor = {
-  x: 0,
-  y: 0,
-};
-window.addEventListener("mousemove", function (event) {
-  cursor.x = event.clientX / sizes.width - 0.5;
-  cursor.y = event.clientY / sizes.height - 0.5;
-});
 
 const sizes = {
   width: 800,
@@ -50,20 +39,11 @@ group.add(cube3);
 scene.add(group);
 
 // Camera
-const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  1, // near
-  1000 // far
-);
-// camera.position.x = 1;
-// camera.position.y = 1;
-camera.position.z = 5;
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
+camera.position.x = 1;
+camera.position.y = 1;
+camera.position.z = 3;
 scene.add(camera);
-
-// Controls
-const controls = new OrbitControls(camera, document.getElementById("webgl"));
-controls.enableDamping = true;
 
 // Group Transforms
 group.rotation.z = Math.PI / 3;
@@ -79,15 +59,16 @@ renderer.setSize(sizes.width, sizes.height);
 // Clock
 const clock = new THREE.Clock();
 
+gsap.to(group.position, { duration: 1, x: 2 });
+gsap.to(group.position, { duration: 1, delay: 2, x: 0 });
+
 // Animation
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
-  // camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3;
-  // camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3;
-  // camera.position.y = -cursor.y * 3;
+  // camera.position.x = Math.sin(elapsedTime); // half rotation per second
+  // camera.position.y = Math.cos(elapsedTime); // half rotation per second
   // camera.lookAt(group.position);
-  controls.update();
 
   renderer.render(scene, camera);
 
